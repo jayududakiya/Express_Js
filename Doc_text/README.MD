@@ -13,3 +13,9 @@
 ? npm i -D packageName
 * for the install package as devDependencies  
 -->
+
+<!-- git push Commands  -->
+# git checkout -b branchName
+# git add .
+# git commit -m "Commit"
+# git push -u origin branchName
