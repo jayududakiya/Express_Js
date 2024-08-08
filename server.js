@@ -65,33 +65,32 @@ server.listen(8000,()=>{
 
 /* ------------------------------- // TODO practice ------------------------------ */
 
-
-const userData = [
-    {
-        id : 1,
-        name:"us01",
-        age : 10,
-        class : 5
-    },
-    {
-        id : 2,
-        name:"us02",
-        age : 10,
-        class : 5
-    },
-    {
-        id : 3,
-        name:"us03",
-        age : 10,
-        class : 5
-    },
-    {
-        id : 4,
-        name:"us04",
-        age : 10,
-        class : 5
-    }
-]
+// const userData = [
+//     {
+//         id : 1,
+//         name:"us01",
+//         age : 10,
+//         class : 5
+//     },
+//     {
+//         id : 2,
+//         name:"us02",
+//         age : 10,
+//         class : 5
+//     },
+//     {
+//         id : 3,
+//         name:"us03",
+//         age : 10,
+//         class : 5
+//     },
+//     {
+//         id : 4,
+//         name:"us04",
+//         age : 10,
+//         class : 5
+//     }
+// ]
 
 
 // server.get('/ab',(req,res)=>{    
@@ -177,21 +176,91 @@ const userData = [
 // })
 
 
-server.get('/',(req,res)=>{
-    // res.status(200)
-    res.set('Content-Type', 'text/html')
-    res.append('Link', ['<http://localhost/>', '<http://localhost:8000/>','<http://127.0.0.1:8000/>'])
-    res.append('Set-Cookie', 'foo=bar; Path=/; HttpOnly')
-    res.append('Warning', '199 Miscellaneous warning')
-    // cookcie add with constion 
-    res.cookie('name', 'tobi01', { domain: 'localhost', path: '/' , expires: new Date(Date.now() + 900000) , secure : true})
-    // cookcie add with constion 
-    res.cookie('name', 'jhon/admin', { domain: 'example.com', path: '/admin', secure : true})
-    // cookcie add with constion 
-    res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true })
-    res.write("<h1> this is from server Home </h1>")
+// server.get('/',(req,res)=>{
+//     // res.status(200)
+//     res.set('Content-Type', 'text/html')
+//     res.append('Link', ['<http://localhost/>', '<http://localhost:8000/>','<http://127.0.0.1:8000/>'])
+//     res.append('Set-Cookie', 'foo=bar; Path=/; HttpOnly')
+//     res.append('Warning', '199 Miscellaneous warning')
+//     // cookcie add with constion 
+//     res.cookie('name', 'tobi01', { domain: 'localhost', path: '/' , expires: new Date(Date.now() + 900000) , secure : true})
+//     // cookcie add with constion 
+//     res.cookie('name', 'jhon/admin', { domain: 'example.com', path: '/admin', secure : true})
+//     // cookcie add with constion 
+//     res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true })
+//     res.write("<h1> this is from server Home </h1>")
 
+//     res.end()
+// })
+
+// server.listen(8000,()=>{console.log("server is running at 8000 port http://localhost:8000")})
+
+
+/* -------------------------------- // TODO Lesson 03   -------------------------------- */
+
+
+let middleWare = (req,res,next) => {
+    if(req.query.password === "1234"){
+        console.log('Success');
+        next();
+    }else{
+        return res.json({message : "Incorrect Way!!!"})
+    }
+}
+
+let logInMiddleWare = (req,res,next) => {
+    let email = req.query.email
+    if(email.includes('@')){
+        console.log('Success');
+        next();
+    }else{
+        console.log(req.query.email);
+        return res.json({message : "Incorrect Way!!!"})
+    }
+}
+
+
+// * Application Level  Middleware 
+// server.use(middleWare)
+
+server.get('/',(req,res)=>{
+    res.write('<h1>Welcome to Server !!!!</h1>')
     res.end()
 })
 
-server.listen(8000,()=>{console.log("server is runnig at 8000 port http://localhost:8000")})
+server.post('/user',(req,res)=>{
+    res.send({message : "user was post Successfully"})
+    res.end()
+})
+
+// * Route Level  Middleware 
+server.get('/login',  logInMiddleWare ,(req,res)=>{
+    res.send({message : "user logIn  Successfully"})
+    res.end()
+})
+
+
+/* -------------------------------- // TODO Lesson 03_2 use file    -------------------------------- */
+
+
+// * width require method using 
+// const userData = require('./Data/Data.json');
+
+
+// * width FS module 
+
+const fs = require('fs')
+
+const userData = fs.readFileSync('./Data/Data.json' , 'utf-8')
+
+// ? this will return string like data 
+
+
+server.get('/local_data',(req,res)=>{
+    // To Convert In to JSON Formate
+    res.json(JSON.parse(userData))
+    res.end()
+})
+
+
+server.listen(8000,()=>{console.log("server is running at 8000 port http://localhost:8000")})
