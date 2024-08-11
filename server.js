@@ -1,109 +1,92 @@
-/* // TODO ---------------------------------- lesson 04 (08/08/2024) ---------------------------------- */
+/* // TODO ---------------------------------- lesson 05 [09/08/2024]  ---------------------------------- */
+// !CREATE [API] FOR PRODUCTS -> GET [read] , GET/:ID [find/read] , POST [create]
 
-/* ------------------------- //? Know Extra Middleware ------------------------ */
+const express = require("express")
+const morgan = require("morgan")
+const fs = require('fs')
+const path = require('path');
 
-//* -> < 4.0 version ---> body-parser
 
-// now use 
-//* -> express.json() ---> raw / json formate
-//* -> express.urlencoded({extended : true})  --> forms
-        //* extended:
-        //* If true, the middleware will parse the URL-encoded data with the qs library (allowing for rich objects and arrays).
-        //* If false, it will use the querystring library, which does not support nested objects.
-//* -> express.static() -->  for use static url and image links
-//* -> morgan as  parti middleware for log 
-/* -------------------------------------------------------------------------- */
+//? CREATE APP
+const app  = express();
+app.use( express.json())
+app.use(morgan("dev"))
 
-// ! CODE
-const express = require("express");
-const morgan = require('morgan')
+// IMPORT DATA 
+// const products = require("./Data/products.json")
 
-const server = express();
+// IMPORT DATA AS FS MODULE 
+const products =  JSON.parse(fs.readFileSync('./Data/products.json','utf-8'))
 
-// TODO : TOPIC : 1 [Application & Routes level Midd]
 
-//* Custom middleware as Application level
-let Middleware = (req, res, next) => {
-  //! in if (req.query.name != "") is not Working 
- // fix by this if (req.query.name && req.query.name != "")
+//** GET ALL PRODUCTS
 
-  if (req.query.name && req.query.name != "") {
-    console.log("Success Middleware Is Working");
-    next();
-  } else {
-    console.log(req.query);
-    res.json({ message: "Not Found Correct Routes For Express Js !!!" });
-  }
-};
+app.get("/products",(req,res)=>{
+    res.json(products)
+})
 
-//* Custom middleware as Application level
-let middleWare = (req,res,next) => {
-   if(Object.keys(req.query).length !== 0 && req.query.password.trim() !== "") {
-        console.log('Success');
-        next();
+//** FIND PRODUCTS
+
+app.get("/products/:id",(req,res)=>{
+    const ID = +req.params.id;
+    const product = products.find(product => product.id === ID)
+    console.log(product);
+    if(product){
+        res.json({message : "Product was Found SuccessFully" ,product})
     }else{
-        res.json({message : "Incorrect Way!!"})
+        res.json({message : "Product Was Not Found.. Try Again....."})
     }
-}
+})
 
-//* Custom middleware as Route level
-function LogInMiddleware(req, res, next) {
-  if (req.query.login === "true") {
-    //if query login is true then is go for next
-    console.log("LogIn Is Success Full");
-    next();
-  } else {
-    res.json({ message: "Login Id Was Not Found pleas try Aging" });
-  }
-}
+//** CREATE PRODUCTS 
+app.post("/products",(req,res)=>{
+    // console.log(req.body);  
+    if(Boolean(Object.keys(req.body).length)){
+        products.push(req.body);
+        // Add to json file 
+        fs.writeFileSync('./Data/products.json' ,  JSON.stringify(products, null, 4) , 'utf-8' )
+        res.json({message : "Products was Add SuccessFully",products : req.body})
+    }else{
+        res.json({message : "Products was NOT Add Try Again for Validate Schema.."})
+    }
+})
 
-// * EXAMPLES
-// server.use(Middleware)
-// server.use(middleWare)
+// !CREATE [API] FOR USERDATA -> GET [read] , GET/:ID [find/read] , POST [create]
 
-// * use of Route level 
-// server.get("/user", LogInMiddleware, (req, res) => {
-//     res.json({ user: "from the user Route OK" });
-//   });
-      
-// TODO : TOPIC : 2 [Extra express.json() & express.urlencoded()]
+//IMPORT ALL USER DATA with fs module 
+const userData = JSON.parse(fs.readFileSync('./Data/userData.json' , 'utf-8'))
 
-// server.use(express.json())
-// server.use(express.urlencoded({extended : true}))
-
-//* Examples
-// server.get("/user", (req, res) => {
-//     console.log(req.body)
-//     res.write(`<p>Hello Hi : <b>${(req.body.name) ? req.body.name : "Jack" }</b></p>`)
-//     res.end()
-// });    
+//** GET ALL USER DATA 
+app.get('/user',(req,res)=>{
+    res.json(userData)
+})
 
 
+//** GET SINGLE USER USER DATA 
+app.get('/user/:id',(req,res)=>{
+    const ID  =  +req.params.id;
+    const user = userData.find(user => user.id  === ID);
+    if(user){
+        res.json({message : "user Was Found " , user})
+    }else{
+        res.json({message : "User Was Not Found.. Try Again....."})
+    }
+})
 
-// TODO : TOPIC : 3 [Extra express.static() & server.use(morgan('dev'))]
+//** CREATE new USER
 
-server.use("/",express.static('./public')) // this is show index.html file directly 
-server.use("/demo",express.static('./public/data.json')) // this is show data.json
-
-server.use(morgan('dev'))
-
-// server.use((req,res,next)=>{
-//     console.log(req.url , "\t" ,  req.method ,"\t");
-//     next()  
-// })
-
-server.get("/", (req, res) => {
-    res.write("<h1>this is Home Page Route</h1>");
-    res.end();
-});
-
-server.post("/user", (req, res) => {
-    const BODY = req.body;
-    res.send(BODY)
-});
+app.post('/user',(req,res)=>{
+    const BODY = req.body
+    if(Boolean(Object.keys(BODY).length)){
+        userData.push(BODY)
+        fs.writeFileSync('./Data/userData.json' , JSON.stringify(userData , null , 2) , 'utf-8')
+        res.json({message : "User was Add SuccessFully",user : BODY})
+    }else{
+        res.json({message : "User was NOT Add Try Again for Validate Schema.."})
+    }
+})
 
 
-//! server start 
-server.listen(8000, () => {
-  console.log(`Server Start At This PORT : 8000`);
-});
+app.listen(1200,()=>{
+    console.log("Server Is Start At Port 1200");
+})
