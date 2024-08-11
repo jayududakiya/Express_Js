@@ -8,7 +8,7 @@
     "contact": "+7-125-896-8472",
     "country": "Russia",
     "jobTitle": "Senior Developer",
-    "experience": 3
+    "experience": "fresher"
   },
   {
     "id": 2,
@@ -107,28 +107,6 @@
     "contact": "+86-464-764-6202",
     "country": "China",
     "jobTitle": "Sales Representative",
-    "experience": 3
-  },
-  {
-    "id": 11,
-    "name": "Menard Sylett",
-    "age": 39,
-    "gender": "Male",
-    "email": "msylett0@samsung.com",
-    "contact": "+963 244 253 4149",
-    "country": "Syria",
-    "jobTitle": "Programmer II",
-    "experience": 1
-  },
-  {
-    "id": 12,
-    "name": "Mara Adin",
-    "age": 60,
-    "gender": "Polygender",
-    "email": "madin7@newyorker.com",
-    "contact": "+55 548 956 6329",
-    "country": "Brazil",
-    "jobTitle": "Media Manager III",
-    "experience": 3
+    "experience": "fresher"
   }
 ]

@@ -4,7 +4,7 @@
   "description": "Learning ExpressJs",
   "main": "server.js",
   "scripts": {
-    "test": "nodemon app.js",
+    "test": "nodemon practiceFile.js",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
