@@ -88,15 +88,14 @@
     "experience": 3
   },
   {
-    "id": 9,
+    "id": 9,  
     "name": "Carlee Blaylock",
-    "age": 69,
+    "age": 27,
     "gender": "Female",
     "email": "cblaylock8@salon.com",
     "contact": "+86-802-978-0282",
-    "country": "China",
-    "jobTitle": "Administrative Assistant III",
-    "experience": 1
+    "experience": "fresher",
+    "jobTitle": "Quality Engineer"
   },
   {
     "id": 10,
@@ -108,5 +107,16 @@
     "country": "China",
     "jobTitle": "Sales Representative",
     "experience": "fresher"
+  },
+  {
+    "id": 11,
+    "name": "Margery Josovich",
+    "age": 8,
+    "gender": "Female",
+    "email": "mjosovich1@imdb.com",
+    "contact": "+62 537 589 7722",
+    "country": "Indonesia",
+    "jobTitle": "Mechanical Systems Engineer",
+    "experience": "junior"
   }
 ]
