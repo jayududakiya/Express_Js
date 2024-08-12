@@ -1,7 +1,7 @@
 
 /* // TODO ---------------------------------- lesson 06 [10/08/2024]  ---------------------------------- */
 
-// !CREATE [API] FOR PRODUCTS -> GET [read] , GET/:ID [find/read] , POST [create] , PUT [reples] , PATCH [update] , DELETE 
+// !CREATE [API] FOR PRODUCTS -> GET [read] , GET/:ID [find/read] , POST [create] , PUT [repels] , PATCH [update] , DELETE 
 
 const express = require("express")
 const morgan = require("morgan")
@@ -52,29 +52,29 @@ app.post("/products",(req,res)=>{
     }
 })
 
-//** REPLASE PRODUCTS 
+//** REPLACE PRODUCTS 
 app.put("/products/:id",(req,res)=>{
     let ID = +req.params.id
     const productIndex = products.findIndex(product => product.id === ID)
     if(productIndex !== -1){
         products[productIndex] = {id : ID , ...req.body}
         fs.writeFileSync('./Data/products.json' , JSON.stringify(products , null , 4) ,'utf-8')
-        res.json({message : "Products Was Reples SuccesFuly " , product : products[productIndex]})
+        res.json({message : "Products Was Replace SuccessFully " , product : products[productIndex]})
     }else{
-        res.json({message : "Products was NOT Replase Try Again"})
+        res.json({message : "Products was NOT Replace Try Again"})
     }
 })
 
-//** UPADTE PRODUCTS 
+//** UPDATE PRODUCTS 
 app.patch("/products/:id",(req,res)=>{
     let ID = +req.params.id
     const productIndex = products.findIndex(product => product.id === ID)
     if(productIndex !== -1){
         products[productIndex] = {...products[productIndex],...req.body}
         fs.writeFileSync('./Data/products.json' , JSON.stringify(products , null , 4) ,'utf-8')
-        res.json({message : "Products Was Upadte SuccesFuly " , product : products[productIndex]})
+        res.json({message : "Products Was Update SuccessFully " , product : products[productIndex]})
     }else{
-        res.json({message : "Products was NOT Upadte Try Again"})
+        res.json({message : "Products was NOT Update Try Again"})
     }
 })
 
@@ -91,7 +91,7 @@ app.delete("/products/:id",(req,res)=>{
     }
 })
 
-// !CREATE [API] FOR USERDATA -> GET [read] , GET/:ID [find/read] , POST [create] , PUT [reples] , PATCH [update] , DELETE
+// !CREATE [API] FOR USERDATA -> GET [read] , GET/:ID [find/read] , POST [create] , PUT [repels , PATCH [update] , DELETE
 
 //IMPORT ALL USER DATA with fs module 
 const userData = JSON.parse(fs.readFileSync('./Data/userData.json' , 'utf-8'))
@@ -125,20 +125,20 @@ app.post('/user',(req,res)=>{
     }
 })
  
-//** REPLASE USER
+//** REPLACE USER
 
 app.put('/user/:id' , (req,res)=>{
     const ID = +req.params.id;
     const userIndex = userData.findIndex(user => user.id === ID)
     if(userIndex !== -1){
-        //  * WAHY 01 TO REAPLSE DATA 
+        //  * WAY 01 TO REPLACE DATA 
         // userData[userIndex] = {id : ID , ...req.body};
-        //  * WAHY 02 TO REAPLSE DATA 
+        //  * WAY 02 TO REPLACE DATA 
         userData.splice(userIndex , 1,{id : ID , ...req.body})
         fs.writeFileSync('./Data/userData.json',JSON.stringify(userData , null , 2) , 'utf-8');
-        res.json({message:"user Data replase SuccessFully" , user : req.body})
+        res.json({message:"user Data Replace SuccessFully" , user : req.body})
     }else{
-        res.json({message:"user Data Not replase Try Again"})
+        res.json({message:"user Data Not Replace Try Again"})
     }
 })
 
@@ -147,14 +147,14 @@ app.patch('/user/:id' , (req,res)=>{
     const ID = +req.params.id;
     const userIndex = userData.findIndex(user => user.id === ID)
     if(userIndex !== -1){
-        //  * WAHY 01 TO UPDATE DATA 
+        //  * WHY 01 TO UPDATE DATA 
         // userData[userIndex] = {...userData[userIndex] , ...req.body};
-        //  * WAHY 02 TO REAPLSE DATA 
+        //  * WHY 02 TO UPDATE DATA 
         userData.splice(userIndex , 1,{...userData[userIndex], ...req.body})
         fs.writeFileSync('./Data/userData.json',JSON.stringify(userData , null , 2) , 'utf-8');
-        res.json({message:"user Data replase SuccessFully" , user : req.body})
+        res.json({message:"user Data Update SuccessFully" , user : req.body})
     }else{
-        res.json({message:"user Data Not replase Try Again"})
+        res.json({message:"user Data Not Update Try Again"})
     }
 })
 
@@ -162,19 +162,19 @@ app.patch('/user/:id' , (req,res)=>{
 app.delete('/user/:id' , (req,res)=>{
     const ID  = +req.params.id;
     const index = userData.findIndex(user => user.id === ID);
-    //* WAHY 01 TO DELETE DATA 
+    //* WHY 01 TO DELETE DATA 
     // const restUser = userData.filter(user => user.id !== ID);
-    //* WAHY 02 TO DELETE DATA 
+    //* WHY 02 TO DELETE DATA 
     const user = userData[index]
     userData.splice(index,1);
     if(index !== -1){
-        //* use with WAHY 01 TO DELETE DATA 
+        //* use with WHY 01 TO DELETE DATA 
         // fs.writeFileSync('./Data/userData.json',JSON.stringify(restUser,null,2),"utf-8");
-        //* use with WAHY 02 TO DELETE DATA 
+        //* use with WHY 02 TO DELETE DATA 
         fs.writeFileSync('./Data/userData.json',JSON.stringify(userData,null,2),"utf-8");
         res.json({message : "user Was Delete SuccessFully",user})
     }else{
-        res.json({message : "user Was Not Deleter"})
+        res.json({message : "user Was Not Delete"})
     }
 })
 
