@@ -15,8 +15,8 @@
 -->
 
 # 04 <!-- git push Commands 
+? # git checkout -b branchName
 ? # git add .
-?  git checkout -b branchName
 ? # git commit -m "Commit"
 ? # git push -u origin branchName
 -->
