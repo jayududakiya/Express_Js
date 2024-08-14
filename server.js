@@ -1,30 +1,35 @@
-/* // TODO ---------------------------------- lesson 07 [12/08/2024]  ---------------------------------- */
- 
-// TODO :[1] create ROUTING 
-// TODO :[2] create controller Method 
-// TODO :[3] Connect To Server 
-// TODO :[4] Create Utile Folder with different function 
+/* // TODO ----------------------------------- lesson 08 [13/08/2024] ----------------------------------- */
+// TODO :[1] INSTALL MONGOOSE PACKAGE 
+// TODO :[2] CREATE MODULE FOLDER AND ADD USER AND PRODUCTS SCHEMA 
+// TODO :[3] CREATE USER & PRODUCTS IN MONGODB DATA BASE 
 
-//* IMPORT  DEFAULT MODULES
 const express = require('express');
-const morgan = require('morgan')
+const morgan = require('morgan');
+const mongoose = require("mongoose");
 
-//* IMPORT  DEFAULT ROUTES 
-const productsRoutes = require('./routes/products.routes')
-const userRoutes = require('./routes/user.routes')
+mongoose.connect('mongodb://127.0.0.1:27017/localServerDB')
+.then(()=>{
+    console.log("Database Connection established SuccessFully.......");
+})
+.catch((error)=>{
+    console.log(error);
+})
 
 const server = express();
 
-// ? middlewares 
-server.use(morgan('dev'))
-server.use(express.json())
+server.use(express.json());
+server.use(morgan('dev'));
 
-server.get("/" , (req,res)=>{
-    res.write("<h1>Welcome To Home Routes</h1>");
-    res.end();
+server.get('/',(req,res) => {
+    res.write('<h1>This From Home</h1>')
+    res.end()
 })
 
-server.use('/api/product',productsRoutes)
-server.use('/api/user',userRoutes)
+const userRoutes = require('./routes/user.routes')
+const productRoutes = require('./routes/products.routes')
 
-server.listen(8000,()=>console.log('Server Is Start.... At 8000 Port....'))
+server.use('/api/user',userRoutes);
+server.use('/api/product',productRoutes);
+
+
+server.listen(8000,()=>console.log('server Start At http://localhost:8000'));
