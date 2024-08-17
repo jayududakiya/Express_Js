@@ -15,7 +15,7 @@ const userRoutes = express.Router();
 
 // ! CREATE FUNCTION FOR LOCAL_DATABASE MONGOOSE [CRUD OPERATIONS]
 // ** [14/08/2024]
-const { createUser, getAllUser , findUser} = require("../controller/user.controller");
+const { createUser, getAllUser , findUser, updateUser, deleteUser} = require("../controller/user.controller");
 
 //** GET ALL USER DATA
 userRoutes.get("/", getAllUser);
@@ -26,15 +26,12 @@ userRoutes.get("/-q", findUser); // user-q for find user base on name field
 // //** CREATE new USER
 userRoutes.post("/", createUser);
 
-// //** REPLACE USER
-
-// userRoutes.put("/:id", replaceUser);
-
+//** [16/08/2024]
 // //** UPDATE USER
-// userRoutes.patch("/:id", updateUser);
+userRoutes.put("/", updateUser);
 
-// // ** DELETE USER
-// userRoutes.delete("/:id", deleteUser);
+// ** DELETE USER
+userRoutes.delete("/", deleteUser);
 
 
 module.exports = userRoutes
