@@ -15,13 +15,13 @@ const userRoutes = express.Router();
 
 // ! CREATE FUNCTION FOR LOCAL_DATABASE MONGOOSE [CRUD OPERATIONS]
 // ** [14/08/2024]
-const { createUser } = require("../controller/user.controller");
+const { createUser, getAllUser , findUser} = require("../controller/user.controller");
 
 //** GET ALL USER DATA
-// userRoutes.get("/", getAllUser);
+userRoutes.get("/", getAllUser);
 
 // //** GET SINGLE USER USER DATA
-// userRoutes.get("/:id", findUser);
+userRoutes.get("/-q", findUser); // user-q for find user base on name field
 
 // //** CREATE new USER
 userRoutes.post("/", createUser);

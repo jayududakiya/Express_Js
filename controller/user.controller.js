@@ -7,17 +7,56 @@
 // ? import data schema from model file 
 const User = require("../model/user.model")
 
+// CREATE USER  WITH CONDITION
 exports.createUser = async (req,res) => {
     try {
-        const user = await User.create({...req.body});
-        user.save();
-        res.status(200).json({user , message : "User Was Added"});
+        // const user  = await User.find({email : email}) // module.find Method use for find many object 
+        const { email } = req.body;
+        const user  = await User.findOne({email : email}) // module.findOne Method use for find first object
+        if(user){ // if user is Not null 
+            return res.status(400).json({message : "user is already existing....."})
+        }else{ // if find user is Null 
+            const user = await User.create({...req.body});
+            res.status(201).json({message : "user Was Create",user});
+        }
     } catch (error) {
         console.log("Error",error);
         res.status(500).json({message : "Internal Server Error"});
     }
 }
 
+
+//GET ALL USER DATA 
+exports.getAllUser = async (req,res) => {
+    try {
+        const user = await User.find()
+        if(user.length){
+            res.status(200).json(user)
+        }else{
+            res.status(404).json({user , message : "user was data was not Found....."})
+        }
+    } catch (error) {
+        console.log("ERROR=>",error);
+        res.status(500).json({message : "Internal Server Error"});
+    }
+}
+
+//FIND USER 
+exports.findUser = async (req,res) => {
+    try {
+        const name =  req.query.name;
+        const user = await User.findOne({name : name})
+        console.log("user",user);
+        if(user){
+            return res.status(200).json(user)
+        }else{
+            return res.status(404).json({message : "user Was Not Found......."})
+        }
+    } catch (error) {
+        console.log("error",error);
+        res.status(500).json({message : "Internal Server Error"})
+    }
+}
 
 
 

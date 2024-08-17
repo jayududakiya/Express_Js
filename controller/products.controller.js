@@ -6,17 +6,53 @@
 // ? import data schema from model file 
 const Product = require('../model/product.model')
 
+// CREATE PRODUCTS 
 exports.CreateProduct = async (req,res)  => {
     try {
-        const product = await Product.create({...req.body})
-        product.save();
-        res.status(200).json({product , message : "Product Was Added"});
+        const {sku} = req.body;
+        const product = await Product.findOne({sku : sku});
+        if(product){
+            return res.status(400).json({message : "product was already exists....",skuId : product.sku}) // codeName : "bad Request"
+        }else{
+            const product = await Product.create({...req.body})
+            return res.status(201).json({message :"product Was Created....",product});
+        }
     } catch (error) {
         console.log("Error",error);
         res.status(500).json({message : "Internal Server Error"});
     }
 }
 
+//GET ALL PRODUCTS 
+exports.GetAllProduct = async (req,res) => {
+    try {
+        const product = await Product.find();
+        if(product.length){
+            res.status(200).json(product)
+        }else{
+            res.status(400).json({message:"products was not Found......"})
+        }
+    } catch (error) {
+        console.log("Error",error);
+        res.status(500).json({message : "Internal Server Error"});
+    }
+}
+
+// FIND SINGLE PRODUCT
+exports.FindProduct = async (req,res) => { //! END POINT IS BY QUERY 
+    try {
+        const skuId = req.query.skuId;
+        const product = await Product.findOne({sku : skuId});
+        if(product){
+            return res.status(200).json(product)
+        }else{
+            return res.status(400).json({message : "products not Fount SKU_ID dose not match......"}) // bad request
+        }
+    } catch (error) {
+        console.log("Error",error);
+        res.status(500).json({message : "Internal Server Error"});
+    }
+}
 
 
 /* ---------------------------- // ## NOT IN USE ---------------------------- */

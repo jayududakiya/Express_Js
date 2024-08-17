@@ -1,7 +1,4 @@
 /* // TODO ----------------------------------- lesson 08 [13/08/2024] ----------------------------------- */
-// TODO :[1] INSTALL MONGOOSE PACKAGE 
-// TODO :[2] CREATE MODULE FOLDER AND ADD USER AND PRODUCTS SCHEMA 
-// TODO :[3] CREATE USER & PRODUCTS IN MONGODB DATA BASE 
 
 const express = require('express');
 const morgan = require('morgan');
