@@ -29,7 +29,7 @@ exports.createUser = async (req, res) => {
 //GET ALL USER DATA
 exports.getAllUser = async (req, res) => {
   try {
-    const user = await User.find();
+    const user = await User.find({isDeleted : false});
     if (user.length) {
       res.status(200).json(user);
     } else {
@@ -47,7 +47,7 @@ exports.getAllUser = async (req, res) => {
 exports.findUser = async (req, res) => {
   try {
     const userId = req.query.userId;
-    const user = await User.findOne({ _id: userId });
+    const user = await User.findOne({ _id: userId , isDeleted:false});
     if (user) {
       return res.status(200).json(user);
     } else {
@@ -66,7 +66,7 @@ exports.findUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const { userId } = req.query;
-    let user = await User.findById(userId);
+    let user = await User.findOne({_id : userId , isDeleted : false});
     if (!user) {
       return res.status(404).json({ message: "User was not found." });
     }else{
@@ -82,6 +82,25 @@ exports.updateUser = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error...." });
   }
 };
+
+
+// DELETE USER FROM DATABASE [HEAR_DELETE]
+exports.deleteUserSoft = async (req,res) =>{
+  try {
+   const {userId}=req.query;
+   let user = await User.findOne({_id : userId , isDeleted : false});
+   if(!user){
+      return res.status(404).json({message : "user Not Found....."})
+   }else{
+    // HERE NOT DELETE USER ONLY UPDATE FILED 
+    user = await User.findByIdAndUpdate(userId , {$set : {"isDeleted" : true , "isActive":false} },{new : true})
+    return res.status(200).json({message : "user Was Deleted..." , user})
+   }
+  } catch (error) {
+      console.log("Error==>",error);
+      res.status(500).json({message  : "Internal Server Error"})
+  }
+}
 
 
 // DELETE USER FROM DATABASE [HEAR_DELETE]

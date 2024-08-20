@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 
 const productSchema = mongoose.Schema({
+  "isDeleted" : {
+        type : Boolean,
+        default : false
+    },
     "title": {
         type : String,
         required : true

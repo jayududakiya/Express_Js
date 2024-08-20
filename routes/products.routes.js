@@ -16,7 +16,7 @@ const productsRoutes = express.Router();
 
 // ! CREATE FUNCTION FOR LOCAL_DATABASE MONGOOSE [CRUD OPERATIONS]
 // ** [14/08/2024]
-const { CreateProduct , FindProduct , GetAllProduct, UpdateProduct, DeleteProduct } = require("../controller/products.controller");
+const { CreateProduct , FindProduct , GetAllProduct, UpdateProduct, DeleteProduct, DeleteProductSoft } = require("../controller/products.controller");
 
 // //** GET ALL PRODUCTS
 productsRoutes.get("/",GetAllProduct);
@@ -33,6 +33,6 @@ productsRoutes.post("/",CreateProduct);
 productsRoutes.put("/",UpdateProduct);
 
 // ** DELETE PRODUCTS DATA
-productsRoutes.delete("/",DeleteProduct);
+productsRoutes.delete("/",DeleteProductSoft);
 
 module.exports = productsRoutes;

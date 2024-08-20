@@ -29,6 +29,14 @@ const userSchema = mongoose.Schema({
             type : Number,
             required : true
         },
+    },
+    "isDeleted" : {
+        type : Boolean,
+        default : false
+    },
+    "isActive" : {
+        type : Boolean,
+        default : true
     }
 })
 

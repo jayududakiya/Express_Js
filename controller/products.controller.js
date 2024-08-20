@@ -26,7 +26,7 @@ exports.CreateProduct = async (req,res)  => {
 //GET ALL PRODUCTS 
 exports.GetAllProduct = async (req,res) => {
     try {
-        const product = await Product.find();
+        const product = await Product.find({isDeleted : false});
         if(product.length){
             res.status(200).json(product)
         }else{
@@ -43,11 +43,11 @@ exports.FindProduct = async (req,res) => { //! END POINT IS BY QUERY
     try {
         // const skuId = req.query.skuId;
         const {productId} = req.query;
-        const product = await Product.findOne({ _id: productId});
+        const product = await Product.findOne({_id : productId , isDeleted : false});
         if(product){
             return res.status(200).json(product)
         }else{
-            return res.status(404).json({message : "products not Fount SKU_ID dose not match......"}) // bad request
+            return res.status(404).json({message : "products not Fount productID dose not match......"}) // bad request
         }
     } catch (error) {
         console.log("Error",error);
@@ -62,8 +62,7 @@ exports.FindProduct = async (req,res) => { //! END POINT IS BY QUERY
 exports.UpdateProduct = async (req,res) => {
     try {
         const {productId} = req.query;
-        let product = await Product.findById(productId);
-        console.log("product",product);
+        let product = await Product.findOne({_id : productId , isDeleted : false});
         if(!product){
             return res.status(404).json({message : "products Was Not Found....."});
         }else{
@@ -82,11 +81,27 @@ exports.DeleteProduct = async (req,res) => {
     try {
         const {productId} = req.query; 
         let product = await Product.findById(productId);
-        console.log("!product",!product);
         if(!product){
             return res.status(404).json({message : "product Was Not Found...."})
         }else{
             product = await Product.findByIdAndDelete(productId);
+            return res.status(200).json({message:"product Was Deleted.....",product})
+        }
+    } catch (error) {
+        console.log("Error==>",error);
+        res.status(500).json({message : "Internal Server Error"})
+    }
+}
+
+// FOR DELETE PRODUCTS [SOFT_DELETE]
+exports.DeleteProductSoft = async (req,res) => {
+    try {
+        const {productId} = req.query; 
+        let product = await Product.findOne({_id : productId , isDeleted : false});
+        if(!product){
+            return res.status(404).json({message : "product Was Not Found...."})
+        }else{
+            product = await Product.findByIdAndUpdate(productId,{$set : {isDeleted : true}},{new : true});
             return res.status(200).json({message:"product Was Deleted.....",product})
         }
     } catch (error) {

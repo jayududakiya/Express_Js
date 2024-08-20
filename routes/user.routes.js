@@ -15,7 +15,7 @@ const userRoutes = express.Router();
 
 // ! CREATE FUNCTION FOR LOCAL_DATABASE MONGOOSE [CRUD OPERATIONS]
 // ** [14/08/2024]
-const { createUser, getAllUser , findUser, updateUser, deleteUser} = require("../controller/user.controller");
+const { createUser, getAllUser , findUser, updateUser, deleteUser, deleteUserSoft} = require("../controller/user.controller");
 
 //** GET ALL USER DATA
 userRoutes.get("/", getAllUser);
@@ -31,7 +31,8 @@ userRoutes.post("/", createUser);
 userRoutes.put("/", updateUser);
 
 // ** DELETE USER
-userRoutes.delete("/", deleteUser);
+// userRoutes.delete("/", deleteUser); //[herdDelete]
+userRoutes.delete("/", deleteUserSoft); // [softDelete]
 
 
 module.exports = userRoutes
