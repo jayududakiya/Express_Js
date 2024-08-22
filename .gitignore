@@ -4,3 +4,5 @@
 /practiceFile.js
 /README.MD
 /.env
+/userLog.txt
+# /helper/verifyToken.js

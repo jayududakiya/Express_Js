@@ -2,37 +2,18 @@ const express = require("express");
 const userRoutes = express.Router();
 
 
-// ! IMPORT CONTROLLERS CREATE FUNCTION FOR LOCAL_FILE_DATA [CRUD OPERATIONS]
-// ** [11/08/2024]
-// const {
-//   findUser,
-//   getAllUser,
-//   createUser,
-//   replaceUser,
-//   updateUser,
-//   deleteUser,
-// } = require("../controller/user.controller");
+// ! IMPORT CONTROLLERS CREATE FUNCTION FOR application level api or routes 
+// ** [20/08/2024]
 
-// ! CREATE FUNCTION FOR LOCAL_DATABASE MONGOOSE [CRUD OPERATIONS]
-// ** [14/08/2024]
-const { createUser, getAllUser , findUser, updateUser, deleteUser, deleteUserSoft} = require("../controller/user.controller");
+const {registrationUser,loginUser,userProfile} = require('../controller/user.controller')
 
-//** GET ALL USER DATA
-userRoutes.get("/", getAllUser);
+const {verifyToken} = require("../helper/verifyToken")
 
-// //** GET SINGLE USER USER DATA
-userRoutes.get("/-q", findUser); // user-q for find user base on name field
+// for registrationUser
+userRoutes.post('/registration',registrationUser)
 
-// //** CREATE new USER
-userRoutes.post("/", createUser);
+userRoutes.post('/login',loginUser)
 
-//** [16/08/2024]
-// //** UPDATE USER
-userRoutes.put("/", updateUser);
-
-// ** DELETE USER
-// userRoutes.delete("/", deleteUser); //[herdDelete]
-userRoutes.delete("/", deleteUserSoft); // [softDelete]
-
+userRoutes.get('/profile',verifyToken,userProfile)
 
 module.exports = userRoutes

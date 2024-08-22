@@ -13,12 +13,19 @@ const userSchema = mongoose.Schema({
     },
     email: {
         type : String,
+        required: true,
+        unique : true
+    },
+    password : {
+        type :String ,
         required: true
     },
-    "contact": String , // sort from to set Type In Schema 
+    contactNo:{
+        type : String ,
+        required : true
+    },
     country: {
         type : String ,
-        required: true,
     },
     jobInfo : {
         jobTitle:{
@@ -30,6 +37,9 @@ const userSchema = mongoose.Schema({
             required : true
         },
     },
+    profileImage : {
+        type : String,
+    },
     "isDeleted" : {
         type : Boolean,
         default : false
@@ -38,6 +48,9 @@ const userSchema = mongoose.Schema({
         type : Boolean,
         default : true
     }
+},{
+    versionKey : false , 
+    timestamps : true 
 })
 
 
