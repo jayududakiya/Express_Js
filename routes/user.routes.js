@@ -4,14 +4,20 @@ const userRoutes = express.Router();
 
 /* -------------------------------------------------------------------------- */
 /*//!-IMPORT CONTROLLERS FUNCTION FOR application level api or routes */
-/*                             //* [20/08/2024]                             */
+/*                             //* [21/08/2024]                             */
 /* -------------------------------------------------------------------------- */
 
-const { userRegistration, userLogin } = require('../controller/user.controller')
+const { userRegistration, userLogin , userProfile } = require('../controller/user.controller');
 
-userRoutes.post('/register',userRegistration)
+//! calling middlewares
 
-userRoutes.post('/login',userLogin)
+const { verifyToken } = require('../helper/verifyToken')
+
+userRoutes.post('/register',userRegistration);
+
+userRoutes.post('/login',userLogin);
+
+userRoutes.get('/profile',verifyToken,userProfile);
 
 
 module.exports = userRoutes;

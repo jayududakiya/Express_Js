@@ -2,11 +2,17 @@
 
 /* -------------------------------------------------------------------------- */
 /*//!-CREATE FUNCTION FOR application level api or routes */
-/*                             //* [20/08/2024]                             */
+/*                             //* [21/08/2024]                             */
 /* -------------------------------------------------------------------------- */
 
 const User = require('../model/user.model');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
+const { getISTTimestamp } = require('../service/timeStamp')
+
+const filePath = path.join(__dirname,process.env.LOG_FILE_NAME);
 
 exports.userRegistration = async (req,res) => {
   try {
@@ -35,9 +41,23 @@ exports.userLogin = async (req,res) => {
     if(!confirmPassword){
       return res.status(400).json({message:'Enter Valid Email Or Password'});
     }
-    res.status(200).json({message : 'login Was SussesFul......',user})
+    const token = jwt.sign({userId:user._id},process.env.JWT_SECURE_KEY);
+    const userLog = `{ \n userId : "${user._id}" ,\n userName : "${user.name}" ,\n userEmail : "${user.email}" ,\n tokenID : "${token}" ,\n createAT : "${getISTTimestamp()}" \n} ,\n`
+    fs.appendFileSync(filePath,userLog,'utf8')
+    res.status(200).json({message : 'login Was SussesFul......',token})
   } catch (error) {
     console.log('Error==>',error);    
     res.status(500).json({message : "Internal Server Error"});
   }
 }
+
+exports.userProfile = async (req,res) => {
+  try {
+    const {user} = req;    
+    res.status(200).json({user})
+  } catch (error) {
+    console.log("Error==>",error);
+    res.status(500).json({message : "Internal Server Error"}) 
+  }
+}
+
