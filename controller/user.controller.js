@@ -136,3 +136,14 @@ exports.changeUserPassword = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+exports.viewUsers = async (req,res) => {
+  try {
+    const users = await User.find({isDeleted : false});
+    if(users.length === 0) return res.status(404).json({message : 'user Data Was Not Found'});
+    res.render('usersViews.hbs',{users})
+  } catch (error) {
+    console.log("Error==>", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}

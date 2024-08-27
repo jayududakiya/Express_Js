@@ -109,3 +109,14 @@ exports.DeleteProductSoft = async (req,res) => {
         res.status(500).json({message : "Internal Server Error"})
     }
 };
+
+exports.productView = async (req,res) => {
+    try {
+        const products = await Product.find({isDeleted : false});
+        if(products.length === 0) return res.status(404).json({message : 'Products Data Was Not Found'});
+        res.render('productsView.ejs',{products});
+    } catch (error) {
+        console.log("Error==>",error);
+        res.status(500).json({message : "Internal Server Error"})
+    }
+ }

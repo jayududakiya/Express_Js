@@ -4,8 +4,9 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require("mongoose");
+const ejs = require('ejs');
+const hbs = require('handlebars');
 require('dotenv').config()
-
 
 mongoose.connect(process.env.MONGO_URL)
 .then(()=>{
@@ -17,8 +18,12 @@ mongoose.connect(process.env.MONGO_URL)
     console.error("Error Stack:", error.stack);
 })
 
+
 const server = express();
 const path = require('path');
+
+server.set('view engine','ejs');
+server.set('view engine','hbs');
 
 // server.use(path.join(__dirname,'asset/images/userImg'),express.static(path.join(__dirname,'asset/images/userImg')))
 server.use(express.json());
@@ -39,5 +44,5 @@ const productRoutes = require('./routes/products.routes')
 server.use('/api/user',userRoutes);
 server.use('/api/product',productRoutes);
 
-const PORT = process.env.PORT || 3030;
+const PORT = process.env.PORT || 8080;
 server.listen(PORT,()=>console.log(`server Start At http://localhost:${PORT}`));
