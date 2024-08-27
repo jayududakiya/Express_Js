@@ -7,7 +7,7 @@ const userRoutes = express.Router();
 /*                             //* [21/08/2024]                             */
 /* -------------------------------------------------------------------------- */
 
-const { userRegistration, userLogin , userProfile } = require('../controller/user.controller');
+const { userRegistration, userLogin , userProfile , updateUser, deleteUser , changeUserPassword} = require('../controller/user.controller');
 
 //! calling middlewares
 
@@ -18,6 +18,13 @@ userRoutes.post('/register',userRegistration);
 userRoutes.post('/login',userLogin);
 
 userRoutes.get('/profile',verifyToken,userProfile);
+
+userRoutes.put('/updateProfile',verifyToken,updateUser);
+
+userRoutes.put('/deleteProfile',verifyToken,deleteUser);
+
+userRoutes.put('/changePassword',verifyToken,changeUserPassword);
+
 
 
 module.exports = userRoutes;
