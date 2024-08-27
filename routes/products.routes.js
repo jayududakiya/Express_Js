@@ -18,6 +18,10 @@ const productsRoutes = express.Router();
 // ** [14/08/2024]
 const { CreateProduct , FindProduct , GetAllProduct, UpdateProduct, DeleteProduct, DeleteProductSoft } = require("../controller/products.controller");
 
+
+// ! CALLING MIDDLEWARES
+const { upload } = require('../helper/uploadImage')
+
 // //** GET ALL PRODUCTS
 productsRoutes.get("/",GetAllProduct);
 
@@ -25,7 +29,7 @@ productsRoutes.get("/",GetAllProduct);
 productsRoutes.get("/-q",FindProduct); // -q for find product base on sku field
 
 // //** CREATE PRODUCTS
-productsRoutes.post("/",CreateProduct);
+productsRoutes.post("/",upload.array(),CreateProduct);
 
 //** [16/08/2024]
 

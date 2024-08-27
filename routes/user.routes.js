@@ -13,13 +13,15 @@ const { userRegistration, userLogin , userProfile , updateUser, deleteUser , cha
 
 const { verifyToken } = require('../helper/verifyToken')
 
-userRoutes.post('/register',userRegistration);
+const { upload } = require('../helper/uploadImage');
+
+userRoutes.post('/register', upload.single('profileImage'),userRegistration);
 
 userRoutes.post('/login',userLogin);
 
 userRoutes.get('/profile',verifyToken,userProfile);
 
-userRoutes.put('/updateProfile',verifyToken,updateUser);
+userRoutes.put('/updateProfile',verifyToken , upload.single('profileImage') ,updateUser);
 
 userRoutes.put('/deleteProfile',verifyToken,deleteUser);
 

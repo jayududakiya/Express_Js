@@ -82,9 +82,9 @@ const productSchema = mongoose.Schema({
         required : true
       } 
     },
-    "images": [{type : String , required : true}],
-    "thumbnail":{type : String , required : true},
-    "warrantyInformation": {type : String , required : true},
+    "images": [{type : String , required : true}], // multiple images 
+    "thumbnail":{type : String , required : true}, // 1 img for thumbnail
+    "warrantyInformation": {type : String , required : true}, 
     "shippingInformation": {type : String , required : true},
     "availabilityStatus": String
   })

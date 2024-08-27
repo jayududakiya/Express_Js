@@ -16,13 +16,17 @@ const filePath = path.join(__dirname, process.env.LOG_FILE_NAME);
 
 exports.userRegistration = async (req, res) => {
   try {
+    let filePath = ''
     const { email, password } = req.body;
     let user = await User.findOne({ email: email, isDeleted: false });
     if (user) {
       return res.status(400).json({ message: "User Is Already Exists" });
     }
     const hasPassword = await bcrypt.hashSync(password, 10);
-    user = await User.create({ ...req.body, password: hasPassword });
+    if(req.file){
+      filePath  = await req.file.path.replace(/\\/g,'/');
+    }
+    user = await User.create({ ...req.body, password: hasPassword , profileImage : filePath });
     res.status(200).json({ message: "user is Created", user });
   } catch (error) {
     console.log("Error==>", error);
@@ -67,8 +71,13 @@ exports.userProfile = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
+    let filePath = ''
     const user = req.user;
-    const updateData = await req.body;
+    let updateData = await req.body;
+    if(req.file){
+      filePath  = await req.file.path.replace(/\\/g,'/');
+      updateData = {...updateData,profileImage:filePath};
+    }
     await User.findByIdAndUpdate(user._id, { $set: updateData }, { new: true });
     res
       .status(202)

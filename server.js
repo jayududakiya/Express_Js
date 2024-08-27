@@ -18,9 +18,14 @@ mongoose.connect(process.env.MONGO_URL)
 })
 
 const server = express();
+const path = require('path');
 
+// server.use(path.join(__dirname,'asset/images/userImg'),express.static(path.join(__dirname,'asset/images/userImg')))
 server.use(express.json());
+server.use(express.urlencoded({extended : true }));
 server.use(morgan('dev'));
+
+server.use('/public/images/usersImg',express.static(path.join(__dirname,'/public/images/usersImg')))
 
 server.get('/',(req,res) => {
     res.write('<h1>This From Home</h1>')
