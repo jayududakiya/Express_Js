@@ -38,11 +38,13 @@ server.get('/',(req,res) => {
 })
 
 const userRoutes = require('./routes/user.routes')
-const productRoutes = require('./routes/products.routes')
+const productRoutes = require('./routes/products.routes');
+const CartRoutes = require('./routes/cart.routes');
 
 
 server.use('/api/user',userRoutes);
 server.use('/api/product',productRoutes);
+server.use('/api/cart',CartRoutes);
 
 const PORT = process.env.PORT || 8080;
 server.listen(PORT,()=>console.log(`server Start At http://localhost:${PORT}`));

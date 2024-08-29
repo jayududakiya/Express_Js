@@ -87,7 +87,10 @@ const productSchema = mongoose.Schema({
     "warrantyInformation": {type : String , required : true}, 
     "shippingInformation": {type : String , required : true},
     "availabilityStatus": String
-  })
+  },{
+    versionKey : false , 
+    timestamps : true 
+})
 
 
 
